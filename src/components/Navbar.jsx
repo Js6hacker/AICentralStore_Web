@@ -14,7 +14,7 @@ export default function Navbar() {
           
           {/* LOGO */}
           <img
-            src="/favicon.png"
+            src="/icon.png"
             alt="logo"
             width="28"
             style={{ borderRadius: "6px" }}
