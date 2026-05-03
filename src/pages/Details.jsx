@@ -18,12 +18,22 @@ export default function Details() {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  const [ai, setAI] = useState(null);
+  // 🔥 3-state system
+  const [ai, setAI] = useState(undefined);
   const [similar, setSimilar] = useState([]);
 
- 
+  // 🔥 Safe domain
+  const getDomain = (url) => {
+    try {
+      return new URL(url).hostname;
+    } catch {
+      return "";
+    }
+  };
+
+  // 🔥 Fetch AI
   useEffect(() => {
-    setAI(null);
+    setAI(undefined);
 
     getAI().then((data) => {
       const found = data.find(
@@ -34,13 +44,20 @@ export default function Details() {
             .replace(/\s+/g, "-") === slug
       );
 
-      setAI(found || null);
+      setAI(found || false); // false = not found
     });
   }, [slug]);
 
+  // 🔥 Redirect if not found
+  useEffect(() => {
+    if (ai === false) {
+      navigate("/", { replace: true });
+    }
+  }, [ai, navigate]);
+
   // 🔥 Similar AI
   useEffect(() => {
-    if (!ai) return;
+    if (!ai || ai === false) return;
 
     getAI().then((data) => {
       const filtered = data
@@ -55,14 +72,14 @@ export default function Details() {
     });
   }, [ai]);
 
-  // 🔥 Scroll fix
+  // 🔥 Scroll
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
 
   // 🔥 SEO
   useEffect(() => {
-    if (!ai) return;
+    if (!ai || ai === false) return;
 
     document.title = `${ai.name} - Best ${ai.category} AI | AICentralStore`;
 
@@ -72,8 +89,8 @@ export default function Details() {
     }
   }, [ai]);
 
-  // LOADING UI
-  if (!ai) {
+  // 🔥 LOADING
+  if (ai === undefined) {
     return (
       <Box sx={{ p: 5 }}>
         <Skeleton width={200} height={50} />
@@ -81,6 +98,9 @@ export default function Details() {
       </Box>
     );
   }
+
+  // 🔥 Redirect state (no render)
+  if (ai === false) return null;
 
   return (
     <Container maxWidth="md" sx={{ pt: 10, pb: 5 }}>
@@ -110,6 +130,7 @@ export default function Details() {
       >
         <Box sx={{ display: "flex", gap: 3, alignItems: "center" }}>
           
+          {/* ICON */}
           <Box
             sx={{
               width: 100,
@@ -121,12 +142,17 @@ export default function Details() {
               justifyContent: "center"
             }}
           >
-            <img
-              src={`https://www.google.com/s2/favicons?sz=128&domain=${new URL(ai.website).hostname}`}
-              style={{ width: "80%" }}
-            />
+            {getDomain(ai.website) ? (
+              <img
+                src={`https://www.google.com/s2/favicons?sz=128&domain=${getDomain(ai.website)}`}
+                style={{ width: "80%" }}
+              />
+            ) : (
+              <Typography>{ai.name[0]}</Typography>
+            )}
           </Box>
 
+          {/* INFO */}
           <Box>
             <Typography variant="h4">{ai.name}</Typography>
             <Chip label={ai.category} sx={{ mt: 1 }} />
@@ -136,8 +162,10 @@ export default function Details() {
           </Box>
         </Box>
 
+        {/* DESCRIPTION */}
         <Typography mt={3}>{ai.description}</Typography>
 
+        {/* BUTTON */}
         <Button
           variant="contained"
           href={ai.website}
@@ -150,8 +178,8 @@ export default function Details() {
 
       {/* SIMILAR */}
       {similar.length > 0 && (
-        <Box mt={5} sx={{ mt: 5 }}>
-          <Typography variant="h5" mb={2} sx={{ mb: 3 }}>
+        <Box mt={5}>
+          <Typography variant="h5" mb={2} sx = {{mt:5, mb:3}}>
             Similar AI Tools
           </Typography>
 

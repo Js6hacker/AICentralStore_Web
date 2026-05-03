@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import { getAI } from "../services/api";
 import AICard from "../components/AICard";
 import SkeletonCard from "../components/SkeletonCard";
-import { Box, Typography, TextField } from "@mui/material";
+import {
+  Box,
+  Typography,
+  IconButton
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export default function Home() {
   const [data, setData] = useState([]);
@@ -49,13 +55,49 @@ export default function Home() {
         </Typography>
       </Box>
 
-      {/* SEARCH */}
-      <TextField
-        fullWidth
-        placeholder="Search AI..."
-        sx={{ mb: 3 }}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      {/* 🔥 IMPROVED SEARCH BAR */}
+      <Box
+        sx={{
+          mb: 4,
+          display: "flex",
+          alignItems: "center",
+          background: "rgba(255,255,255,0.06)",
+          borderRadius: 3,
+          px: 2,
+          height: 55,
+          border: "1px solid rgba(255,255,255,0.15)",
+          transition: "0.3s",
+          "&:hover": {
+            borderColor: "#6366f1",
+          },
+          "&:focus-within": {
+            borderColor: "#6366f1",
+            boxShadow: "0 0 10px rgba(99,102,241,0.5)"
+          }
+        }}
+      >
+        <SearchIcon sx={{ color: "#aaa", mr: 1 }} />
+
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search AI tools..."
+          style={{
+            background: "transparent",
+            border: "none",
+            outline: "none",
+            color: "white",
+            width: "100%",
+            fontSize: "16px"
+          }}
+        />
+
+        {search && (
+          <IconButton onClick={() => setSearch("")}>
+            <ClearIcon sx={{ color: "#aaa" }} />
+          </IconButton>
+        )}
+      </Box>
 
       {/* LOADING */}
       {loading && (
@@ -73,7 +115,7 @@ export default function Home() {
         </Typography>
       )}
 
-      {/* 🔥 NETFLIX CATEGORY ROWS */}
+      {/* CATEGORIES */}
       {!loading &&
         categories.map((cat) => {
           const items = data.filter(
@@ -100,8 +142,6 @@ export default function Home() {
                   scrollBehavior: "smooth",
                   "&::-webkit-scrollbar": { display: "none" }
                 }}
-
-                
               >
                 {items.map((ai, i) => (
                   <Box key={i} sx={{ minWidth: 260 }}>
