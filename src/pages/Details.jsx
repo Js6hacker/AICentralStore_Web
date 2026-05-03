@@ -54,6 +54,7 @@ export default function Details() {
       navigate("/", { replace: true });
     }
   }, [ai, navigate]);
+  
 
   // 🔥 Similar AI
   useEffect(() => {
@@ -89,7 +90,7 @@ export default function Details() {
     }
   }, [ai]);
 
-  // 🔥 LOADING
+  //  LOADING
   if (ai === undefined) {
     return (
       <Box sx={{ p: 5 }}>
@@ -99,7 +100,7 @@ export default function Details() {
     );
   }
 
-  // 🔥 Redirect state (no render)
+  
   if (ai === false) return null;
 
   return (
