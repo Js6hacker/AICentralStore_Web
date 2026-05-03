@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, Box } from "@mui/material";
 export default function Navbar() {
   return (
     <AppBar
-      position="sticky"
+      position="fixed"
       sx={{
         background: "rgba(0,0,0,0.7)",
         backdropFilter: "blur(10px)"

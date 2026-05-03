@@ -1,4 +1,5 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   Container,
   Typography,
@@ -6,78 +7,99 @@ import {
   Box,
   Chip,
   Grid,
-  IconButton
+  IconButton,
+  Skeleton
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useEffect, useState } from "react";
 import { getAI } from "../services/api";
 import AICard from "../components/AICard";
 
 export default function Details() {
-  const { state: ai } = useLocation();
+  const { slug } = useParams();
   const navigate = useNavigate();
 
+  const [ai, setAI] = useState(null);
   const [similar, setSimilar] = useState([]);
-  const [imgError, setImgError] = useState(false);
 
-  if (!ai) return <Typography>No Data</Typography>;
-
-  // extract domain for logo
-  const getDomain = (url) => {
-    try {
-      return new URL(url).hostname;
-    } catch {
-      return "";
-    }
-  };
-
-  const domain = getDomain(ai.website);
-
-  // fetch similar AI tools
+ 
   useEffect(() => {
+    setAI(null);
+
+    getAI().then((data) => {
+      const found = data.find(
+        (a) =>
+          a.name
+            .toLowerCase()
+            .replace(/[^a-z0-9\s]/g, "")
+            .replace(/\s+/g, "-") === slug
+      );
+
+      setAI(found || null);
+    });
+  }, [slug]);
+
+  // 🔥 Similar AI
+  useEffect(() => {
+    if (!ai) return;
+
     getAI().then((data) => {
       const filtered = data
         .filter(
           (item) =>
-            item.category === ai.category && item.name !== ai.name
+            item.category === ai.category &&
+            item.name !== ai.name
         )
-        .slice(0, 6);
+        .slice(0, 4);
 
       setSimilar(filtered);
     });
   }, [ai]);
 
-  return (
-    <Container
-  maxWidth="md"
-  sx={{
-    pt: 10,   // 👈 TOP SPACE FIX (important)
-    pb: 4
-  }}
->
-      
-      {/* 🔙 BACK BUTTON */}
-      <IconButton
-  onClick={() => navigate(-1)}
-  sx={{
-    position: "absolute",
-    top: 80,      // 👈 below navbar
-    left: 20,
+  // 🔥 Scroll fix
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [slug]);
 
-    color: "#fff",
-    background: "rgba(255,255,255,0.1)",
-    border: "1px solid rgba(255,255,255,0.2)",
-    backdropFilter: "blur(8px)",
+  // 🔥 SEO
+  useEffect(() => {
+    if (!ai) return;
 
-    "&:hover": {
-      background: "rgba(255,255,255,0.2)"
+    document.title = `${ai.name} - Best ${ai.category} AI | AICentralStore`;
+
+    const meta = document.querySelector("meta[name='description']");
+    if (meta) {
+      meta.setAttribute("content", ai.description);
     }
-  }}
->
-  <ArrowBackIcon />
-</IconButton>
+  }, [ai]);
 
-      {/* MAIN CARD */}
+  // LOADING UI
+  if (!ai) {
+    return (
+      <Box sx={{ p: 5 }}>
+        <Skeleton width={200} height={50} />
+        <Skeleton height={150} />
+      </Box>
+    );
+  }
+
+  return (
+    <Container maxWidth="md" sx={{ pt: 10, pb: 5 }}>
+      
+      {/* BACK */}
+      <IconButton
+        onClick={() => navigate(-1)}
+        sx={{
+          position: "fixed",
+          top: 80,
+          left: 20,
+          color: "#fff",
+          background: "rgba(0,0,0,0.6)"
+        }}
+      >
+        <ArrowBackIcon />
+      </IconButton>
+
+      {/* MAIN */}
       <Box
         sx={{
           p: 4,
@@ -86,87 +108,56 @@ export default function Details() {
           border: "1px solid rgba(255,255,255,0.1)"
         }}
       >
-        {/* HEADER */}
         <Box sx={{ display: "flex", gap: 3, alignItems: "center" }}>
           
-          {/* ICON */}
           <Box
             sx={{
               width: 100,
               height: 100,
               borderRadius: 3,
-              background: "#111",
+              background: "#1f2937",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              overflow: "hidden"
+              justifyContent: "center"
             }}
           >
-            {!imgError && domain ? (
-              <img
-                src={`https://www.google.com/s2/favicons?sz=128&domain=${domain}`}
-                alt={ai.name}
-                width="100%"
-                height="100%"
-                style={{ objectFit: "cover" }}
-                onError={() => setImgError(true)}
-              />
-            ) : (
-              <Typography fontSize="32px" fontWeight="bold">
-                {ai.name?.charAt(0)}
-              </Typography>
-            )}
+            <img
+              src={`https://www.google.com/s2/favicons?sz=128&domain=${new URL(ai.website).hostname}`}
+              style={{ width: "80%" }}
+            />
           </Box>
 
-          {/* INFO */}
           <Box>
-            <Typography variant="h4" fontWeight="bold">
-              {ai.name}
-            </Typography>
-
+            <Typography variant="h4">{ai.name}</Typography>
             <Chip label={ai.category} sx={{ mt: 1 }} />
-
             <Typography sx={{ mt: 1 }} color="gray">
               {ai.website}
             </Typography>
           </Box>
         </Box>
 
-        {/* DESCRIPTION */}
-        <Box sx={{ mt: 4 }}>
-          <Typography variant="h6" mb={1}>
-            About
-          </Typography>
+        <Typography mt={3}>{ai.description}</Typography>
 
-          <Typography color="gray">
-            {ai.description || "No description available"}
-          </Typography>
-        </Box>
-
-        {/* ACTION BUTTON */}
-        <Box sx={{ mt: 4 }}>
-          <Button
-            variant="contained"
-            size="large"
-            href={ai.website}
-            target="_blank"
-            sx={{ borderRadius: 3, px: 4 }}
-          >
-            Open Website
-          </Button>
-        </Box>
+        <Button
+          variant="contained"
+          href={ai.website}
+          target="_blank"
+          sx={{ mt: 3 }}
+        >
+          Open Website
+        </Button>
       </Box>
 
-      {/* 🔥 SIMILAR AI SECTION */}
+      {/* SIMILAR */}
       {similar.length > 0 && (
-        <Box sx={{ mt: 5 }}>
-          <Typography variant="h5" mb={2} fontWeight="bold">
+        <Box mt={5} sx={{ mt: 5 }}>
+          <Typography variant="h5" mb={2} sx={{ mb: 3 }}>
             Similar AI Tools
           </Typography>
 
           <Grid container spacing={2}>
             {similar.map((item, i) => (
-              <Grid item xs={12} sm={6} md={4} key={i}>
+              <Grid item xs={12} sm={6} md={3} key={i}>
                 <AICard ai={item} />
               </Grid>
             ))}

@@ -1,6 +1,24 @@
-const API = "https://ai-central-store.vercel.app";
+const API = import.meta.env.VITE_API_URL;
 
-export const getAI = async () => {
-  const res = await fetch(`${API}/ai`);
-  return res.json();
-};
+let cache = null;
+
+export async function getAI() {
+  try {
+    if (cache) return cache;
+
+    const res = await fetch(`${API}/ai`);
+
+    if (!res.ok) {
+      throw new Error("API failed");
+    }
+
+    const data = await res.json();
+
+    cache = data;
+
+    return data;
+  } catch (err) {
+    console.error("API ERROR:", err);
+    return []; 
+  }
+}
