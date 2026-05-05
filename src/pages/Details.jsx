@@ -13,16 +13,17 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getAI } from "../services/api";
 import AICard from "../components/AICard";
+import { Helmet } from "react-helmet-async";
 
 export default function Details() {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  // 🔥 3-state system
+  //  3-state system
   const [ai, setAI] = useState(undefined);
   const [similar, setSimilar] = useState([]);
 
-  // 🔥 Safe domain
+  //  Safe domain
   const getDomain = (url) => {
     try {
       return new URL(url).hostname;
@@ -31,7 +32,7 @@ export default function Details() {
     }
   };
 
-  // 🔥 Fetch AI
+  //  Fetch AI
   useEffect(() => {
     setAI(undefined);
 
@@ -48,7 +49,7 @@ export default function Details() {
     });
   }, [slug]);
 
-  // 🔥 Redirect if not found
+  //  Redirect if not found
   useEffect(() => {
     if (ai === false) {
       navigate("/", { replace: true });
@@ -56,7 +57,7 @@ export default function Details() {
   }, [ai, navigate]);
   
 
-  // 🔥 Similar AI
+  //  Similar AI
   useEffect(() => {
     if (!ai || ai === false) return;
 
@@ -73,22 +74,23 @@ export default function Details() {
     });
   }, [ai]);
 
-  // 🔥 Scroll
+  //  Scroll
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
 
-  // 🔥 SEO
+  //  SEO
   useEffect(() => {
     if (!ai || ai === false) return;
 
-    document.title = `${ai.name} - Best ${ai.category} AI | AICentralStore`;
+  //   document.title = `${ai.name} - Best ${ai.category} AI | AICentralStore`;
 
-    const meta = document.querySelector("meta[name='description']");
-    if (meta) {
-      meta.setAttribute("content", ai.description);
-    }
-  }, [ai]);
+  //   const meta = document.querySelector("meta[name='description']");
+  //   if (meta) {
+  //     meta.setAttribute("content", ai.description);
+  //   }
+   }, [ai]);
+  
 
   //  LOADING
   if (ai === undefined) {
@@ -105,10 +107,27 @@ export default function Details() {
 
   return (
     <Container maxWidth="md" sx={{ pt: 10, pb: 5 }}>
+    <Helmet>
+      <title>
+    {ai
+      ? `${ai.name} - Best ${ai.category} AI Tool`
+      : "AICentralStore - Discover AI Tools"}
+  </title>
+      <meta name="description" content={ai.enhanced_description || ai.description} />
+      <meta property="og:title" content={ai.name} />
+      <meta property="og:description" content={ai.description} />
+      <meta property="og:type" content="website" />
+    </Helmet>
       
       {/* BACK */}
       <IconButton
-        onClick={() => navigate(-1)}
+        onClick={() => {
+          if (window.history.length > 2) {
+            navigate(-1);
+          } else {
+            navigate("/", { replace: true });
+          }
+        }}
         sx={{
           position: "fixed",
           top: 80,
@@ -119,6 +138,7 @@ export default function Details() {
       >
         <ArrowBackIcon />
       </IconButton>
+      
 
       {/* MAIN */}
       <Box

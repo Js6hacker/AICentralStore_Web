@@ -1,5 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { HelmetProvider } from "react-helmet-async";
+
+<HelmetProvider>
+  <App />
+</HelmetProvider>
 
 import Home from "./pages/Home";
 import Details from "./pages/Details";
