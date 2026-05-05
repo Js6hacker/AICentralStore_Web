@@ -281,7 +281,7 @@ export default function Blog() {
           </Box>
 
           {/* RELATED BLOGS */}
-          <Box mt={6} sx={{ pt: 6,pb: 3, borderTop: "1px solid #333" }}>
+          <Box mt={6} sx={{ pt: 6,pb: 3, borderTop: "1px solid #333", }}>
             <Typography variant="h5" mb={4} sx={{pb:2}}>
               Related Blogs
             </Typography>
@@ -291,7 +291,12 @@ export default function Blog() {
                 <Grid item xs={12} sm={4} key={b.slug}>
                   <Card
                     onClick={() => navigate(`/blog/${b.slug}`)}
-                    sx={{ cursor: "pointer",borderRadius: 3, background: "rgba(255,255,255,0.05)" }}
+                    sx={{ cursor: "pointer",borderRadius: 3, background: "rgba(255,255,255,0.05)" ,transition: "0.3s",
+                border: "1px solid rgba(255,255,255,0.08)",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  borderColor: "#6366f1"
+                }}}
                   >
                     <CardContent>
                       <Typography fontWeight="bold">{b.title}</Typography>
@@ -320,7 +325,13 @@ export default function Blog() {
                     p: 2,
                     borderRadius: 3,
                     background: "rgba(255,255,255,0.05)",
-                    cursor: "pointer"
+                    cursor: "pointer",
+                    transition: "0.3s",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    "&:hover": {
+                      transform: "translateY(-5px)",
+                      borderColor: "#6366f1"
+                    }
                   }}
                   onClick={() => navigate(`/blog/${b.slug}`)}
                 >
