@@ -1,10 +1,13 @@
 import fs from "fs";
 
 async function generate() {
-  const res = await fetch("https://ai-central-store.vercel.app/ai");
-  const data = await res.json();
+  const BASE_URL = "https://www.aicentralstore.com";
 
-  const urls = data.map(ai => {
+  // 🔥 Fetch AI tools (existing)
+  const res = await fetch("https://ai-central-store.vercel.app/ai");
+  const aiData = await res.json();
+
+  const aiUrls = aiData.map((ai) => {
     const slug = ai.name
       .toLowerCase()
       .replace(/[^a-z0-9\s]/g, "")
@@ -12,21 +15,46 @@ async function generate() {
 
     return `
   <url>
-    <loc>https://www.aicentralstore.com/ai/${slug}</loc>
+    <loc>${BASE_URL}/ai/${slug}</loc>
   </url>`;
   });
 
+  // 🔥 Load BLOGS (NEW)
+  let blogUrls = [];
+  try {
+    const blogs = JSON.parse(
+      fs.readFileSync("./public/blogs.json", "utf-8")
+    );
+
+    blogUrls = blogs.map((blog) => `
+  <url>
+    <loc>${BASE_URL}/blog/${blog.slug}</loc>
+  </url>`);
+  } catch (err) {
+    console.log("⚠️ blogs.json not found or invalid");
+  }
+
+  // 🔥 Combine everything
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
   <url>
-    <loc>https://www.aicentralstore.com/</loc>
+    <loc>${BASE_URL}/</loc>
   </url>
-  ${urls.join("")}
+
+  <url>
+    <loc>${BASE_URL}/blog</loc>
+  </url>
+
+  ${aiUrls.join("")}
+  ${blogUrls.join("")}
+
 </urlset>`;
 
+  // 🔥 Write file
   fs.writeFileSync("./public/sitemap.xml", sitemap);
 
-  console.log("✅ sitemap generated");
+  console.log("✅ sitemap generated (AI + Blogs)");
 }
 
 generate();

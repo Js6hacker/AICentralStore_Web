@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { HelmetProvider } from "react-helmet-async";
+import Blog from "./pages/Blog";
 
 <HelmetProvider>
   <App />
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
           <Route path="/ai/:slug" element={<PageWrapper><Details /></PageWrapper>} />
           <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="/blog/:slug" element={<Blog/>} />
         </Routes>
       </AnimatePresence>
 
