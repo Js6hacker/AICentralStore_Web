@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { HelmetProvider } from "react-helmet-async";
 import Blog from "./pages/Blog";
-
+import {Analytics} from "@vercel/analytics/react";
 
 <HelmetProvider>
   <App />
@@ -26,6 +26,7 @@ function PageWrapper({ children }) {
 
 export default function App() {
   return (
+    <>
       <BrowserRouter>
 
         <Navbar />
@@ -40,5 +41,7 @@ export default function App() {
         </AnimatePresence>
 
       </BrowserRouter>
+      <Analytics />
+    </>
   );
 }
