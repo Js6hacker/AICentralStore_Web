@@ -158,7 +158,7 @@ export default function Details() {
                 xs: "2.5rem",
                 md: "4rem",
               },
-              mt: 2
+              mt: 4
             }}
           >
             {ai.name}
