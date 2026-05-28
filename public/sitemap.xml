@@ -368,9 +368,6 @@
     <loc>https://www.aicentralstore.com/ai/designify</loc>
   </url>
   <url>
-    <loc>https://www.aicentralstore.com/ai/determined-ai</loc>
-  </url>
-  <url>
     <loc>https://www.aicentralstore.com/ai/didimo</loc>
   </url>
   <url>
@@ -419,9 +416,6 @@
     <loc>https://www.aicentralstore.com/ai/elicit</loc>
   </url>
   <url>
-    <loc>https://www.aicentralstore.com/ai/emailforge</loc>
-  </url>
-  <url>
     <loc>https://www.aicentralstore.com/ai/evidently-ai</loc>
   </url>
   <url>
@@ -458,16 +452,13 @@
     <loc>https://www.aicentralstore.com/ai/figma-ai</loc>
   </url>
   <url>
-    <loc>https://www.aicentralstore.com/ai/finsightai</loc>
+    <loc>https://www.aicentralstore.com/ai/finsights-ai</loc>
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/firefliesai</loc>
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/fliki</loc>
-  </url>
-  <url>
-    <loc>https://www.aicentralstore.com/ai/flowassist</loc>
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/flowgpt</loc>
@@ -560,9 +551,6 @@
     <loc>https://www.aicentralstore.com/ai/hoppycopy</loc>
   </url>
   <url>
-    <loc>https://www.aicentralstore.com/ai/hour-one</loc>
-  </url>
-  <url>
     <loc>https://www.aicentralstore.com/ai/hrmind</loc>
   </url>
   <url>
@@ -590,13 +578,7 @@
     <loc>https://www.aicentralstore.com/ai/illustroke</loc>
   </url>
   <url>
-    <loc>https://www.aicentralstore.com/ai/imagerefine</loc>
-  </url>
-  <url>
     <loc>https://www.aicentralstore.com/ai/importio</loc>
-  </url>
-  <url>
-    <loc>https://www.aicentralstore.com/ai/inframind</loc>
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/ink-ai</loc>
@@ -651,9 +633,6 @@
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/kinetix</loc>
-  </url>
-  <url>
-    <loc>https://www.aicentralstore.com/ai/knowledgenest</loc>
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/krea-ai</loc>
@@ -740,6 +719,9 @@
     <loc>https://www.aicentralstore.com/ai/magisto</loc>
   </url>
   <url>
+    <loc>https://www.aicentralstore.com/ai/mailforge</loc>
+  </url>
+  <url>
     <loc>https://www.aicentralstore.com/ai/mailmodo-ai</loc>
   </url>
   <url>
@@ -759,9 +741,6 @@
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/masterpiece-x</loc>
-  </url>
-  <url>
-    <loc>https://www.aicentralstore.com/ai/meaningcloud</loc>
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/mediacraftai</loc>
@@ -818,9 +797,6 @@
     <loc>https://www.aicentralstore.com/ai/murf-ai</loc>
   </url>
   <url>
-    <loc>https://www.aicentralstore.com/ai/mutable-ai</loc>
-  </url>
-  <url>
     <loc>https://www.aicentralstore.com/ai/narrative-bi</loc>
   </url>
   <url>
@@ -846,9 +822,6 @@
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/notyai</loc>
-  </url>
-  <url>
-    <loc>https://www.aicentralstore.com/ai/novaprompt</loc>
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/numerous-ai</loc>
@@ -887,9 +860,6 @@
     <loc>https://www.aicentralstore.com/ai/opsbrain</loc>
   </url>
   <url>
-    <loc>https://www.aicentralstore.com/ai/opstrackerai</loc>
-  </url>
-  <url>
     <loc>https://www.aicentralstore.com/ai/opus-clip</loc>
   </url>
   <url>
@@ -921,12 +891,6 @@
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/pdfgear</loc>
-  </url>
-  <url>
-    <loc>https://www.aicentralstore.com/ai/peltarion</loc>
-  </url>
-  <url>
-    <loc>https://www.aicentralstore.com/ai/peltarion-hub</loc>
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/pendo-ai</loc>
@@ -1118,9 +1082,6 @@
     <loc>https://www.aicentralstore.com/ai/rytr</loc>
   </url>
   <url>
-    <loc>https://www.aicentralstore.com/ai/sajari</loc>
-  </url>
-  <url>
     <loc>https://www.aicentralstore.com/ai/salesforce-einstein</loc>
   </url>
   <url>
@@ -1193,9 +1154,6 @@
     <loc>https://www.aicentralstore.com/ai/sisu-data</loc>
   </url>
   <url>
-    <loc>https://www.aicentralstore.com/ai/skillmapper</loc>
-  </url>
-  <url>
     <loc>https://www.aicentralstore.com/ai/skydio</loc>
   </url>
   <url>
@@ -1250,16 +1208,13 @@
     <loc>https://www.aicentralstore.com/ai/speechmatics</loc>
   </url>
   <url>
-    <loc>https://www.aicentralstore.com/ai/speechnote</loc>
+    <loc>https://www.aicentralstore.com/ai/speechnotes</loc>
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/speechtextai</loc>
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/spellbook</loc>
-  </url>
-  <url>
-    <loc>https://www.aicentralstore.com/ai/spendwatchai</loc>
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/spline-ai</loc>
@@ -1466,9 +1421,6 @@
     <loc>https://www.aicentralstore.com/ai/vizcom</loc>
   </url>
   <url>
-    <loc>https://www.aicentralstore.com/ai/voicecraft</loc>
-  </url>
-  <url>
     <loc>https://www.aicentralstore.com/ai/voiceflow</loc>
   </url>
   <url>
@@ -1484,16 +1436,10 @@
     <loc>https://www.aicentralstore.com/ai/wayve</loc>
   </url>
   <url>
-    <loc>https://www.aicentralstore.com/ai/websenseai</loc>
-  </url>
-  <url>
     <loc>https://www.aicentralstore.com/ai/weights-biases</loc>
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/wellsaid-labs</loc>
-  </url>
-  <url>
-    <loc>https://www.aicentralstore.com/ai/whylabs</loc>
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/wisecut</loc>
@@ -1512,9 +1458,6 @@
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/writesonic</loc>
-  </url>
-  <url>
-    <loc>https://www.aicentralstore.com/ai/writesparkle</loc>
   </url>
   <url>
     <loc>https://www.aicentralstore.com/ai/xai-grok</loc>
