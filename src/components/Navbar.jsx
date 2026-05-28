@@ -13,7 +13,7 @@ export default function Navbar() {
 
   const navigate = useNavigate();
 
-  // 🔥 Fetch data
+  //  Fetch data
   useEffect(() => {
     fetch("/blogs.json")
       .then((res) => res.json())
@@ -23,7 +23,7 @@ export default function Navbar() {
     getAI().then(setTools).catch(() => setTools([]));
   }, []);
 
-  // 🔥 Search logic
+  //  Search logic
   useEffect(() => {
     if (!search.trim()) {
       setResults([]);
@@ -60,7 +60,7 @@ export default function Navbar() {
     setResults([...blogResults, ...toolResults].slice(0, 8));
   }, [search, blogs, tools]);
 
-  // 🔥 Close dropdown on outside click
+  //  Close dropdown on outside click
   useEffect(() => {
     const handleClick = () => setResults([]);
     window.addEventListener("click", handleClick);
@@ -78,14 +78,16 @@ export default function Navbar() {
       <Toolbar sx={{ display: "flex", alignItems: "center" }}>
         
         {/* LOGO */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexShrink: 0 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexShrink: 0, cursor: "pointer" }} onClick={() => navigate("/")}>
           <img
             src="/icon.png"
             alt="logo"
             width="28"
             style={{ borderRadius: "6px" }}
           />
-          <Typography fontWeight="bold">AICentralStore</Typography>
+          <Typography fontWeight="bold">
+            AICentralStore
+          </Typography>
         </Box>
 
         {/* DESKTOP SEARCH */}

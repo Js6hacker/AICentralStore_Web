@@ -340,11 +340,11 @@ export default function Details() {
               <Grid container spacing={3} sx={{ mt: 4, mb: 3 }}>
                 {[
                   {
-                    title: "Category",
+                    title: "Category:",
                     value: ai.category
                   },
                   {
-                    title: "Pricing",
+                    title: "Pricing:",
                     value: "Free & Paid"
                   },
                   {
@@ -558,7 +558,7 @@ export default function Details() {
 
                 <Box mb={2}>
                   <Typography color="#888">
-                    Category
+                    Category:
                   </Typography>
 
                   <Typography fontWeight="bold">
@@ -566,9 +566,9 @@ export default function Details() {
                   </Typography>
                 </Box>
 
-                <Box mb={3}>
+                <Box mb={3} sx={{mt: 1}}>
                   <Typography color="#888">
-                    Pricing
+                    Pricing:
                   </Typography>
 
                   <Typography fontWeight="bold">
