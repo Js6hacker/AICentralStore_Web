@@ -3,14 +3,19 @@ import { AnimatePresence, motion } from "framer-motion";
 import { HelmetProvider } from "react-helmet-async";
 import Blog from "./pages/Blog";
 
+import Home from "./pages/Home";
+import Details from "./pages/Details";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import About from "./pages/About";
+import PrivacyPolicy from "./pages/Policy";
+import Terms from "./pages/Terms";
+import Contact from "./pages/Contact";
+
 
 <HelmetProvider>
   <App />
 </HelmetProvider>
-
-import Home from "./pages/Home";
-import Details from "./pages/Details";
-import Navbar from "./components/Navbar";
 
 function PageWrapper({ children }) {
   return (
@@ -36,8 +41,14 @@ export default function App() {
             <Route path="/ai/:slug" element={<PageWrapper><Details /></PageWrapper>} />
             <Route path="*" element={<Navigate to="/" replace />} />
             <Route path="/blog/:slug" element={<Blog/>} />
+            <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
+            <Route path="/privacy-policy" element={<PageWrapper><PrivacyPolicy /></PageWrapper>} />
+            <Route path="/terms" element={<PageWrapper><Terms /></PageWrapper>} />
+            <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
+         
           </Routes>
         </AnimatePresence>
+        <Footer />
 
       </BrowserRouter>
   );

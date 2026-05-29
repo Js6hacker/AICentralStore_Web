@@ -1,10 +1,23 @@
 import fs from "fs";
 
-async function generate() {
-  const BASE_URL = "https://www.aicentralstore.com";
+const BASE_URL = "https://www.aicentralstore.com";
 
-  // 🔥 Fetch AI tools (existing)
-  const res = await fetch("https://ai-central-store.vercel.app/ai");
+function buildUrl(loc, priority = "0.8") {
+  return `
+  <url>
+    <loc>${loc}</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>${priority}</priority>
+  </url>`;
+}
+
+async function generate() {
+  // AI TOOLS
+  const res = await fetch(
+    "https://ai-central-store.vercel.app/ai"
+  );
+
   const aiData = await res.json();
 
   const aiUrls = aiData.map((ai) => {
@@ -13,48 +26,76 @@ async function generate() {
       .replace(/[^a-z0-9\s]/g, "")
       .replace(/\s+/g, "-");
 
-    return `
-  <url>
-    <loc>${BASE_URL}/ai/${slug}</loc>
-  </url>`;
+    return buildUrl(
+      `${BASE_URL}/ai/${slug}`,
+      "0.8"
+    );
   });
 
-  // 🔥 Load BLOGS (NEW)
+  // BLOGS
   let blogUrls = [];
+
   try {
     const blogs = JSON.parse(
-      fs.readFileSync("./public/blogs.json", "utf-8")
+      fs.readFileSync(
+        "./public/blogs.json",
+        "utf-8"
+      )
     );
 
-    blogUrls = blogs.map((blog) => `
-  <url>
-    <loc>${BASE_URL}/blog/${blog.slug}</loc>
-  </url>`);
-  } catch (err) {
-    console.log("⚠️ blogs.json not found or invalid");
+    blogUrls = blogs.map((blog) =>
+      buildUrl(
+        `${BASE_URL}/blog/${blog.slug}`,
+        "0.7"
+      )
+    );
+  } catch {
+    console.log(
+      "⚠️ blogs.json not found or invalid"
+    );
   }
 
-  // 🔥 Combine everything
+  // STATIC PAGES
+  const staticUrls = [
+    buildUrl(`${BASE_URL}/`, "1.0"),
+
+    buildUrl(`${BASE_URL}/about`, "0.7"),
+
+    buildUrl(
+      `${BASE_URL}/privacy-policy`,
+      "0.5"
+    ),
+
+    buildUrl(
+      `${BASE_URL}/terms`,
+      "0.5"
+    ),
+
+    buildUrl(
+      `${BASE_URL}/contact`,
+      "0.6"
+    )
+  ];
+
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <url>
-    <loc>${BASE_URL}/</loc>
-  </url>
-
-  <url>
-    <loc>${BASE_URL}/blog</loc>
-  </url>
-
-  ${aiUrls.join("")}
-  ${blogUrls.join("")}
+${[
+  ...staticUrls,
+  ...aiUrls,
+  ...blogUrls
+].join("")}
 
 </urlset>`;
 
-  // 🔥 Write file
-  fs.writeFileSync("./public/sitemap.xml", sitemap);
+  fs.writeFileSync(
+    "./public/sitemap.xml",
+    sitemap
+  );
 
-  console.log("✅ sitemap generated (AI + Blogs)");
+  console.log(
+    "✅ sitemap generated (AI + Blogs + Static Pages)"
+  );
 }
 
 generate();
