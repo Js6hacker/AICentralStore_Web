@@ -11,18 +11,16 @@ import About from "./pages/About";
 import PrivacyPolicy from "./pages/Policy";
 import Terms from "./pages/Terms";
 import Contact from "./pages/Contact";
-
-
-<HelmetProvider>
-  <App />
-</HelmetProvider>
+import SubmitAI from "./pages/SubmitAI";
+import GlowBackground from "./components/GlowBackground";
 
 function PageWrapper({ children }) {
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.3 }}
     >
       {children}
     </motion.div>
@@ -32,24 +30,24 @@ function PageWrapper({ children }) {
 export default function App() {
   return (
       <BrowserRouter>
+        <GlowBackground>
+          <Navbar />
 
-        <Navbar />
-
-        <AnimatePresence mode="wait">
-          <Routes>
-            <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
-            <Route path="/ai/:slug" element={<PageWrapper><Details /></PageWrapper>} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-            <Route path="/blog/:slug" element={<Blog/>} />
-            <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
-            <Route path="/privacy-policy" element={<PageWrapper><PrivacyPolicy /></PageWrapper>} />
-            <Route path="/terms" element={<PageWrapper><Terms /></PageWrapper>} />
-            <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
-         
-          </Routes>
-        </AnimatePresence>
-        <Footer />
-
+          <AnimatePresence mode="wait">
+            <Routes>
+              <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
+              <Route path="/ai/:slug" element={<PageWrapper><Details /></PageWrapper>} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path="/blog/:slug" element={<Blog/>} />
+              <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
+              <Route path="/privacy-policy" element={<PageWrapper><PrivacyPolicy /></PageWrapper>} />
+              <Route path="/terms" element={<PageWrapper><Terms /></PageWrapper>} />
+              <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
+              <Route path="/submit-ai" element={<PageWrapper><SubmitAI /></PageWrapper>} />
+            </Routes>
+          </AnimatePresence>
+          <Footer />
+        </GlowBackground>
       </BrowserRouter>
   );
 }

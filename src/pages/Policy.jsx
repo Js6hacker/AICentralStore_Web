@@ -10,11 +10,11 @@ export default function PrivacyPolicy() {
   return (
     <>
       <Helmet>
-        <title>Privacy Policy | AI Central Store</title>
+        <title>Privacy Policy | AICentralStore</title>
 
         <meta
           name="description"
-          content="Privacy Policy for AI Central Store. Learn how we collect, use, and protect your information."
+          content="Privacy Policy for AICentralStore. Learn how we collect, use, and protect your information."
         />
       </Helmet>
 
@@ -70,7 +70,7 @@ export default function PrivacyPolicy() {
                 mb: 4
               }}
             >
-              AI Central Store may collect
+              AICentralStore may collect
               anonymous usage information,
               analytics data, and technical
               information such as browser type,
@@ -137,7 +137,7 @@ export default function PrivacyPolicy() {
                 mb: 4
               }}
             >
-              AI Central Store may use third-party
+              AICentralStore may use third-party
               services such as Google Analytics,
               advertising networks, affiliate
               platforms, and embedded content

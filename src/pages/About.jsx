@@ -13,10 +13,10 @@ export default function About() {
   return (
     <>
       <Helmet>
-        <title>About AI Central Store</title>
+        <title>About AICentralStore</title>
         <meta
           name="description"
-          content="Learn about AI Central Store and our mission to help users discover the best AI tools."
+          content="Learn about AICentralStore and our mission to help users discover the best AI tools."
         />
       </Helmet>
 
@@ -35,7 +35,7 @@ export default function About() {
             fontWeight="bold"
             mb={3}
           >
-            About AI Central Store
+            About AICentralStore
           </Typography>
 
           <Typography
@@ -116,7 +116,7 @@ export default function About() {
             fontWeight="bold"
             mb={5}
           >
-            Why AI Central Store?
+            Why AICentralStore?
           </Typography>
 
           <Grid container spacing={4}>

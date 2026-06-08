@@ -63,7 +63,7 @@ export default function Terms() {
                 mb: 4
               }}
             >
-              By using AI Central Store, you agree
+              By using AICentralStore, you agree
               to comply with these Terms of Service.
             </Typography>
 
