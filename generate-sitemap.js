@@ -83,7 +83,8 @@ async function generate() {
 ${[
   ...staticUrls,
   ...aiUrls,
-  ...blogUrls
+  ...blogUrls,
+  buildUrl("https://mixifia.aicentralstore.com", "0.9")
 ].join("")}
 
 </urlset>`;
