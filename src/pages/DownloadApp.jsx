@@ -31,7 +31,6 @@ export default function DownloadApp() {
   const [paid, setPaid] = useState(false);
   const [error, setError] = useState("");
   const [paymentId, setPaymentId] = useState("");
-  const [currency, setCurrency] = useState("USD"); // "USD" or "INR"
 
   // Check if user has already paid in the past & pre-load script
   useEffect(() => {
@@ -67,13 +66,57 @@ export default function DownloadApp() {
     });
   };
 
-  const triggerDownload = () => {
+  const triggerDownload = (token) => {
+    if (!token) {
+      setError("Download token missing. Please request a new link.");
+      return;
+    }
+    const API_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+      ? "http://localhost:3000"
+      : import.meta.env.VITE_API_URL;
+
     const link = document.createElement("a");
-    link.href = "/aicentralstore.apk";
+    link.href = `${API_URL}/api/download-app?token=${token}`;
     link.setAttribute("download", "aicentralstore.apk");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const handleDownloadAgain = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const storedPaymentId = localStorage.getItem("apk_payment_id");
+      if (!storedPaymentId) {
+        throw new Error("No payment record found. Please verify your purchase.");
+      }
+
+      const API_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+        ? "http://localhost:3000"
+        : import.meta.env.VITE_API_URL;
+
+      const res = await fetch(`${API_URL}/api/payment/token`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paymentId: storedPaymentId })
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to verify purchase history.");
+      }
+
+      const data = await res.json();
+      if (data.success && data.token) {
+        triggerDownload(data.token);
+      } else {
+        throw new Error(data.error || "Unable to retrieve download link.");
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePayment = async () => {
@@ -93,8 +136,7 @@ export default function DownloadApp() {
 
       const res = await fetch(`${API_URL}/api/payment/order`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ currency })
+        headers: { "Content-Type": "application/json" }
       });
 
       if (!res.ok) {
@@ -107,7 +149,7 @@ export default function DownloadApp() {
       }
 
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_Sz4SmfrsEy6Il9",
+        key: orderData.keyId || import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_SzqENT8z28CQAg",
         amount: orderData.amount,
         currency: orderData.currency,
         name: "AICentralStore App",
@@ -137,7 +179,7 @@ export default function DownloadApp() {
               setPaymentId(response.razorpay_payment_id);
               localStorage.setItem("apk_payment_verified", "true");
               localStorage.setItem("apk_payment_id", response.razorpay_payment_id);
-              triggerDownload();
+              triggerDownload(verifyData.token);
             } else {
               throw new Error(verifyData.error || "Verification failed.");
             }
@@ -235,7 +277,7 @@ export default function DownloadApp() {
       {/* CONTENT & PURCHASE SECTION */}
       <Container maxWidth="lg" sx={{ pb: 12 }}>
         <Grid container spacing={5} alignItems="stretch">
-          
+
           {/* FEATURES GRID */}
           <Grid item xs={12} md={7}>
             <Typography
@@ -351,50 +393,22 @@ export default function DownloadApp() {
                   </Box>
 
                   <Typography variant="h4" fontWeight="bold" mb={2}>
-                    AICentralStore Pro
+                    AICentralStore App
                   </Typography>
 
                   <Typography variant="body2" color="text.secondary" mb={3} lineHeight={1.6}>
                     Secure one-time payment for lifetime access. Includes future upgrades and premium releases. Can be downloaded instantly in every country.
                   </Typography>
 
-                  {/* Currency Selector */}
-                  <Box sx={{ mb: 3 }}>
-                    <Tabs
-                      value={currency}
-                      onChange={(e, val) => setCurrency(val)}
-                      variant="fullWidth"
-                      textColor="primary"
-                      indicatorColor="primary"
-                      sx={{
-                        background: "rgba(255, 255, 255, 0.02)",
-                        borderRadius: 2,
-                        border: "1px solid rgba(255, 255, 255, 0.05)",
-                        "& .MuiTab-root": {
-                          color: "#94a3b8",
-                          fontFamily: "'Outfit', sans-serif",
-                          textTransform: "none",
-                          fontSize: "0.85rem"
-                        },
-                        "& .Mui-selected": {
-                          color: "#818cf8 !important"
-                        },
-                        "& .MuiTabs-indicator": {
-                          backgroundColor: "#6366f1"
-                        }
-                      }}
-                    >
-                      <Tab label="Global ($2.99 USD)" value="USD" />
-                      <Tab label="India Only (₹199 INR)" value="INR" />
-                    </Tabs>
-                  </Box>
-
                   <Box sx={{ mb: 4 }}>
                     <Typography variant="h3" fontWeight="bold" component="span">
-                      {currency === "USD" ? "$2.99" : "₹199"}
+                      $1.99
                     </Typography>
                     <Typography variant="body2" color="text.secondary" component="span" sx={{ ml: 1 }}>
                       / lifetime
+                    </Typography>
+                    <Typography variant="caption" display="block" sx={{ mt: 1, color: "primary.light", fontWeight: 500 }}>
+                       *International cards are converted automatically by your bank.
                     </Typography>
                   </Box>
 
@@ -457,7 +471,8 @@ export default function DownloadApp() {
                         variant="contained"
                         color="success"
                         fullWidth
-                        onClick={triggerDownload}
+                        onClick={handleDownloadAgain}
+                        disabled={loading}
                         startIcon={<DownloadIcon />}
                         sx={{
                           py: 1.8,
