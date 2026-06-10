@@ -47,6 +47,16 @@ export default function Footer() {
             </Link>
 
             <Link
+              to="/download-app"
+              style={{
+                color: "#94a3b8",
+                textDecoration: "none"
+              }}
+            >
+              Download App
+            </Link>
+
+            <Link
               to="/privacy-policy"
               style={{
                 color: "#94a3b8",

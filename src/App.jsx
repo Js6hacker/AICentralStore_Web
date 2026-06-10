@@ -12,6 +12,7 @@ import PrivacyPolicy from "./pages/Policy";
 import Terms from "./pages/Terms";
 import Contact from "./pages/Contact";
 import SubmitAI from "./pages/SubmitAI";
+import DownloadApp from "./pages/DownloadApp";
 import GlowBackground from "./components/GlowBackground";
 
 function PageWrapper({ children }) {
@@ -44,6 +45,7 @@ export default function App() {
               <Route path="/terms" element={<PageWrapper><Terms /></PageWrapper>} />
               <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
               <Route path="/submit-ai" element={<PageWrapper><SubmitAI /></PageWrapper>} />
+              <Route path="/download-app" element={<PageWrapper><DownloadApp /></PageWrapper>} />
             </Routes>
           </AnimatePresence>
           <Footer />

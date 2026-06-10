@@ -108,6 +108,7 @@ export default function Navbar() {
           {[
             { label: "Explore", path: "/" },
             { label: "Submit Tool", path: "/submit-ai" },
+            { label: "Download App", path: "/download-app" },
             { label: "About", path: "/about" },
             { label: "Contact", path: "/contact" }
           ].map((item) => {
