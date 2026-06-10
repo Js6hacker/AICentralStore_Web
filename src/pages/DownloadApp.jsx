@@ -11,7 +11,9 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  Tabs,
+  Tab
 } from "@mui/material";
 import { Helmet } from "react-helmet-async";
 import AndroidIcon from "@mui/icons-material/Android";
@@ -29,8 +31,9 @@ export default function DownloadApp() {
   const [paid, setPaid] = useState(false);
   const [error, setError] = useState("");
   const [paymentId, setPaymentId] = useState("");
+  const [currency, setCurrency] = useState("USD"); // "USD" or "INR"
 
-  // Check if user has already paid in the past
+  // Check if user has already paid in the past & pre-load script
   useEffect(() => {
     const verified = localStorage.getItem("apk_payment_verified");
     const storedPaymentId = localStorage.getItem("apk_payment_id");
@@ -40,6 +43,7 @@ export default function DownloadApp() {
         setPaymentId(storedPaymentId);
       }
     }
+    loadRazorpay();
   }, []);
 
   // Dynamically load Razorpay checkout script
@@ -47,6 +51,12 @@ export default function DownloadApp() {
     return new Promise((resolve) => {
       if (window.Razorpay) {
         resolve(true);
+        return;
+      }
+      const existingScript = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]');
+      if (existingScript) {
+        existingScript.onload = () => resolve(true);
+        existingScript.onerror = () => resolve(false);
         return;
       }
       const script = document.createElement("script");
@@ -76,10 +86,15 @@ export default function DownloadApp() {
         throw new Error("Razorpay SDK failed to load. Please verify your connection.");
       }
 
-      const API_URL = import.meta.env.VITE_API_URL;
+      // Check if we are running locally on localhost, default to localhost backend
+      const API_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+        ? "http://localhost:3000"
+        : import.meta.env.VITE_API_URL;
+
       const res = await fetch(`${API_URL}/api/payment/order`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currency })
       });
 
       if (!res.ok) {
@@ -339,13 +354,44 @@ export default function DownloadApp() {
                     AICentralStore Pro
                   </Typography>
 
-                  <Typography variant="body2" color="text.secondary" mb={4} lineHeight={1.6}>
+                  <Typography variant="body2" color="text.secondary" mb={3} lineHeight={1.6}>
                     Secure one-time payment for lifetime access. Includes future upgrades and premium releases. Can be downloaded instantly in every country.
                   </Typography>
 
+                  {/* Currency Selector */}
+                  <Box sx={{ mb: 3 }}>
+                    <Tabs
+                      value={currency}
+                      onChange={(e, val) => setCurrency(val)}
+                      variant="fullWidth"
+                      textColor="primary"
+                      indicatorColor="primary"
+                      sx={{
+                        background: "rgba(255, 255, 255, 0.02)",
+                        borderRadius: 2,
+                        border: "1px solid rgba(255, 255, 255, 0.05)",
+                        "& .MuiTab-root": {
+                          color: "#94a3b8",
+                          fontFamily: "'Outfit', sans-serif",
+                          textTransform: "none",
+                          fontSize: "0.85rem"
+                        },
+                        "& .Mui-selected": {
+                          color: "#818cf8 !important"
+                        },
+                        "& .MuiTabs-indicator": {
+                          backgroundColor: "#6366f1"
+                        }
+                      }}
+                    >
+                      <Tab label="Global ($2.99 USD)" value="USD" />
+                      <Tab label="India Only (₹199 INR)" value="INR" />
+                    </Tabs>
+                  </Box>
+
                   <Box sx={{ mb: 4 }}>
                     <Typography variant="h3" fontWeight="bold" component="span">
-                      ₹199
+                      {currency === "USD" ? "$2.99" : "₹199"}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" component="span" sx={{ ml: 1 }}>
                       / lifetime
