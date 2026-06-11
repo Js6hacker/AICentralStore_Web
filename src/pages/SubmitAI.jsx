@@ -108,7 +108,7 @@ export default function SubmitAI() {
           >
             <Box mb={4}>
               <Typography variant="h4" fontWeight="800" sx={{ fontFamily: "Outfit, sans-serif", letterSpacing: "-0.5px" }}>
-                Submit an AI Tool 🚀 (Currently on work)
+                Submit an AI Tool 🚀
               </Typography>
               <Typography color="text.secondary" sx={{ mt: 1 }}>
                 Suggest a new artificial intelligence platform to be added to our curated directory.
@@ -117,7 +117,7 @@ export default function SubmitAI() {
 
             {success && (
               <Alert severity="success" sx={{ mb: 3, borderRadius: 3, fontWeight: 600 }}>
-                Submitted successfully! Your tool will appear on the Home Page directory.
+                Submitted successfully! Your tool will appear on the Home Page directory and will be available for all users to users after approved by admin.
               </Alert>
             )}
 
@@ -259,9 +259,7 @@ export default function SubmitAI() {
             </Box>
 
             <Box sx={{ mt: 3, pt: 3, borderTop: "1px solid rgba(255, 255, 255, 0.05)", textAlign: "center" }}>
-              <Typography color="text.secondary" fontSize="12px">
-                Note: Standard submissions automatically scrape the domain favicon using our lookup API when rendered.
-              </Typography>
+              
             </Box>
           </Box>
         </Grid>

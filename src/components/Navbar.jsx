@@ -1,8 +1,10 @@
-import { AppBar, Toolbar, Typography, Box, IconButton } from "@mui/material";
+import { AppBar, Toolbar, Typography, Box, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText, Divider } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getAI } from "../services/api";
 import SearchIcon from "@mui/icons-material/Search";
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function Navbar() {
   const [search, setSearch] = useState("");
@@ -10,9 +12,19 @@ export default function Navbar() {
   const [tools, setTools] = useState([]);
   const [results, setResults] = useState([]);
   const [showSearch, setShowSearch] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const handleNavClick = (path) => {
+    navigate(path);
+    setMobileOpen(false);
+  };
 
   //  Fetch data
   useEffect(() => {
@@ -236,11 +248,13 @@ export default function Navbar() {
           )}
         </Box>
 
-        {/* MOBILE SEARCH ICON */}
-        <Box sx={{ display: { xs: "block", md: "none" }, ml: "auto", }}>
+        {/* MOBILE SEARCH ICON & HAMBURGER MENU */}
+        <Box sx={{ display: { xs: "flex", md: "none" }, alignItems: "center", gap: 1, ml: "auto" }}>
           <IconButton onClick={() => setShowSearch(!showSearch)}>
-            
             <SearchIcon sx={{ color: "#aaa", "&:hover": { color: "#fff" } }} />
+          </IconButton>
+          <IconButton onClick={handleDrawerToggle}>
+            <MenuIcon sx={{ color: "#aaa", "&:hover": { color: "#fff" } }} />
           </IconButton>
         </Box>
 
@@ -287,7 +301,7 @@ export default function Navbar() {
                     background: "#444"
                   }
                 }}
->
+              >
                 {results.map((r, i) => (
                   <Box
                     key={i}
@@ -317,6 +331,99 @@ export default function Navbar() {
           </Box>
         )}
       </Toolbar>
+
+      {/* MOBILE DRAWER */}
+      <Drawer
+        anchor="right"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
+        slotProps={{
+          paper: {
+            sx: {
+              width: 280,
+              background: "rgba(9, 9, 14, 0.95)",
+              backdropFilter: "blur(20px)",
+              borderLeft: "1px solid rgba(255, 255, 255, 0.08)",
+              padding: "24px 16px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 3
+            }
+          }
+        }}
+      >
+        {/* Drawer Header */}
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, cursor: "pointer" }} onClick={() => handleNavClick("/")}>
+            <img
+              src="/icon.png"
+              alt="logo"
+              width="28"
+              height="28"
+              style={{ borderRadius: "8px", boxShadow: "0 0 15px rgba(99, 102, 241, 0.4)" }}
+            />
+            <Typography fontWeight="800" sx={{ fontFamily: "'Outfit', sans-serif", fontSize: "1.05rem", letterSpacing: "-0.5px", background: "linear-gradient(90deg, #fff 30%, #a5b4fc 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              AICentralStore
+            </Typography>
+          </Box>
+          <IconButton onClick={handleDrawerToggle} sx={{ color: "#aaa", "&:hover": { color: "#fff" } }}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
+
+        <Divider sx={{ borderColor: "rgba(255, 255, 255, 0.08)" }} />
+
+        {/* Drawer Navigation Links */}
+        <List sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+          {[
+            { label: "Explore", path: "/" },
+            { label: "Submit Tool", path: "/submit-ai" },
+            { label: "Download App", path: "/download-app" },
+            { label: "About", path: "/about" },
+            { label: "Contact", path: "/contact" }
+          ].map((item) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <ListItem key={item.path} disablePadding>
+                <ListItemButton
+                  onClick={() => handleNavClick(item.path)}
+                  sx={{
+                    borderRadius: "12px",
+                    py: 1.5,
+                    px: 2,
+                    background: isActive ? "rgba(99, 102, 241, 0.1)" : "transparent",
+                    border: isActive ? "1px solid rgba(99, 102, 241, 0.25)" : "1px solid transparent",
+                    color: isActive ? "primary.light" : "text.secondary",
+                    transition: "all 0.2s ease",
+                    "&:hover": {
+                      background: "rgba(255, 255, 255, 0.04)",
+                      color: "primary.light",
+                      transform: "translateX(4px)"
+                    }
+                  }}
+                >
+                  <ListItemText
+                    primary={
+                      <Typography
+                        sx={{
+                          fontSize: "15px",
+                          fontWeight: isActive ? 700 : 600,
+                          fontFamily: "'Outfit', sans-serif",
+                        }}
+                      >
+                        {item.label}
+                      </Typography>
+                    }
+                  />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
+        </List>
+      </Drawer>
     </AppBar>
   );
 }

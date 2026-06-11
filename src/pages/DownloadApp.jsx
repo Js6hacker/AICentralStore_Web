@@ -83,6 +83,14 @@ export default function DownloadApp() {
     document.body.removeChild(link);
   };
 
+  const handleResetPurchase = () => {
+    localStorage.removeItem("apk_payment_verified");
+    localStorage.removeItem("apk_payment_id");
+    setPaid(false);
+    setPaymentId("");
+    setError("");
+  };
+
   const handleDownloadAgain = async () => {
     setLoading(true);
     setError("");
@@ -478,10 +486,31 @@ export default function DownloadApp() {
                           py: 1.8,
                           borderRadius: 3,
                           fontWeight: "bold",
-                          boxShadow: "0 4px 15px rgba(52, 211, 153, 0.4)"
+                          boxShadow: "0 4px 15px rgba(52, 211, 153, 0.4)",
+                          mb: 2
                         }}
                       >
                         Download APK Again
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        color="inherit"
+                        fullWidth
+                        onClick={handleResetPurchase}
+                        sx={{
+                          py: 1.5,
+                          borderRadius: 3,
+                          borderColor: "rgba(255, 255, 255, 0.15)",
+                          color: "text.secondary",
+                          fontWeight: "bold",
+                          "&:hover": {
+                            borderColor: "rgba(255, 255, 255, 0.3)",
+                            color: "white",
+                            background: "rgba(255, 255, 255, 0.02)"
+                          }
+                        }}
+                      >
+                        Reset & Purchase Again
                       </Button>
                     </Box>
                   )}

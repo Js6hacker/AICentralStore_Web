@@ -74,7 +74,12 @@ async function generate() {
     buildUrl(
       `${BASE_URL}/contact`,
       "0.6"
-    )
+    ),
+    buildUrl(
+      `${BASE_URL}/download-app`,
+      "0.7"
+    ),
+    buildUrl("https://mixifia.aicentralstore.com", "0.9")
   ];
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -83,8 +88,7 @@ async function generate() {
 ${[
   ...staticUrls,
   ...aiUrls,
-  ...blogUrls,
-  buildUrl("https://mixifia.aicentralstore.com", "0.9")
+  ...blogUrls
 ].join("")}
 
 </urlset>`;
